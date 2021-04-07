@@ -59,10 +59,10 @@
     line-height: 19px;
     letter-spacing: 0;
     text-align: left;
-    color: background: rgba(0, 0, 0, 1);
-;
+    color: rgba(0, 0, 0, 1);;
 
 }
+
 .header__wrapper {
     position: relative;
 }
@@ -142,6 +142,7 @@
 .input__window {
     height: 90px;
     width: 759px;
+    padding: 10px;
     background: #FFFFFF;
     border: 1px solid #DDDBDA;
     box-sizing: border-box;
@@ -191,7 +192,8 @@ textarea:focus {
     margin: 0 0 0 2.2em;
 }
 
-.output__note {
+.output__note { /* общий стиль для всех окон */
+    position: relative;
     height: 109px;
     width: 763px;
     background: #FFFFFF;
@@ -205,16 +207,64 @@ textarea:focus {
     font-size: 16px;
     line-height: 19px;
     color: #53565A;
+    overflow: hidden;
 }
 
-.output__note.output__note--important {
+.output__note.output__note--basic { /* базовый стиль */
+}
+
+.output__note.output__note--important { /* стиль отмеченных важным */
     font-weight: 700;
 }
 
-.output__note.output__note--important:before {
+.output__note.output__note--important>span:before {
     content: "\2606  ";
 }
 
 .output__note.output__note--done {
     text-decoration: line-through;
+}
+
+.output__note.output__note--basic:hover::after {
+    content: "MARK IMPORTANT";
+    float: right;
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 20px;
+    background-color: rgb(56, 180, 108);
+    font-weight: normal;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.6);
+}
+
+/*.output__note.output__note--basic:hover::before {
+    content: url("img/del.svg");
+    float: right;
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
+}*/
+
+.output__note--important:hover::after {
+    content: "NOT IMPORTANT";
+    float: right;
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 20px;
+    background-color: rgb(194,194,194);
+    font-weight: normal;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.6);
+}
+
+.output__note--important:hover::before,
+.output__note.output__note--basic:hover::before{
+    content: url("img/del.svg");
+    float: right;
+    margin-left: 1rem;
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
 }

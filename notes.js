@@ -2,14 +2,16 @@ let activeBtn = document.querySelector('#active');
 let allBtn = document.querySelector('#all');
 let doneBtn = document.querySelector('#done');
 let progressBar = document.querySelector('.sort__progress-bar')
+const allButtons = document.querySelectorAll('.sort__bar')
+
 
 progressBar.addEventListener('click', function (event) {
-    parseClassList (event.target)
+allButtons.forEach(n => n.classList.remove('sort--selected-bar')) // очищаю класс перед запуском
     event.target.classList.toggle('sort--selected-bar')
 
 })
 
-function parseClassList (element) {
+function parseClassList (element) { // проверка на наличие класса
     let x = element.previousElementSibling.classList.contains('sort--selected-bar')
     let y = element.nextElementSibling.classList.contains('sort--selected-bar')
     if (x) {
@@ -19,3 +21,4 @@ function parseClassList (element) {
         element.nextElementSibling.classList.remove('sort--selected-bar')
     }
 }
+

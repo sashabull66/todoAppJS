@@ -7,23 +7,40 @@
   <link rel="stylesheet" href="Index_style.css">
 </head>
 <body>
-<div class="wrapper">
-  <img src="img/notes.svg" class="background__big-img" alt="background">
-  <header class="header">
-    <img class="header__logo" src="img/logo.svg" alt="logo">
-    <input class="header__search" type="search" placeholder="  &#128269 Search task for to do">
-  </header>
-  <main class="main">
-    <div class="sort">
-      <div class="sort__progress-bar">
-        <div class="sort__all-bar" id="all">All</div>
-        <div class="sort__active-bar" id="active">Active</div>
-        <div class="sort__done-bar" id="done">Done</div>
-        <div class="sort__finish"></div>
+  <div class="wrapper">
+    <img src="img/notes.svg" class="background__big-img" alt="background">
+    <header class="header">
+      <img class="header__logo" src="img/logo.svg" alt="logo">
+      <div class="header__wrapper">
+        <input class="header__search" type="search" placeholder="Search task for to do">
       </div>
-    </div>
-  </main>
-</div>
+    </header>
+    <main class="main">
+      <section class="sort">
+        <div class="sort__progress-bar">
+          <div class="sort__bar" id="all">All</div>
+          <div class="sort__bar" id="active">Active</div>
+          <div class="sort__bar" id="done">Done</div>
+          <div class="sort__finish"></div>
+        </div>
+      </section>
+      <section class="input">
+        <label class="input__title" for="input">New Task</label>
+        <textarea class="input__window" id="input"></textarea>
+        <button class="input__button" id="add">ADD</button>
+      </section>
+      <section class="output">
+        <div class="output__note">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+        <div class="output__note output__note--important">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+        <div class="output__note output__note--done">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+        <div class="output__note output__note--important output__note--done">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+        <div class="output__note">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+        <div class="output__note">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+        <div class="output__note">Отправить тестовое задание на курсы SENLA до 1 марта</div>
+      </section>
+
+    </main>
+  </div>
   <script src="notes.js"></script>
 </body>
 </html>

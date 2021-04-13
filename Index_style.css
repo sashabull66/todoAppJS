@@ -66,6 +66,7 @@
     z-index: 1;
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
     height: 1px;
     width: 759px;
     margin: 0 0 0 2.6em;
@@ -79,19 +80,12 @@
     height: 4px;
     width: 175px;
     border-radius: 0;
-    margin: 0 auto;
     padding: 0.5em 0 0.5em 0;
     text-align: center;
     font-weight: 600;
     border-top: 4px solid rgba(255, 255, 255, 0.05);
     color: rgba(83, 86, 90, 1);
     cursor: pointer;
-}
-
-.sort__finish {
-    width: 230px;
-    height: 0;
-    visibility: hidden;
 }
 
 .sort--selected-bar {
@@ -164,11 +158,11 @@ textarea:focus {
 .output {
     width: 759px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin: 0 0 0 2.2em;
 }
 
-.output__note { /* общий стиль для всех окон */
+.output > * { /* общий стиль для всех окон */
     position: relative;
     height: 109px;
     width: 763px;
@@ -186,83 +180,43 @@ textarea:focus {
     overflow: hidden;
 }
 
-.output__note:focus.output__note--basic>.output__btn-area,
-.output__note:hover.output__note--basic>.output__btn-area,
-.output__note:focus.output__note--important>.output__btn-area,
-.output__note:hover.output__note--important>.output__btn-area {
+.output > *:focus.output__note--basic > .output__btn-area,
+.output > *:hover.output__note--basic > .output__btn-area,
+.output > *:focus.output__note--important > .output__btn-area,
+.output > *:hover.output__note--important > .output__btn-area {
     display: block;
 }
 
-.output__note.output__note--basic { /* базовый стиль */
+.hide {
+    display: none!important;
+}
+
+.output__note--basic { /* базовый стиль */
 }
 
 .output__note--basic > .output__btn-area > .output__btn-important { /* убираю кнопку сделать обычным для для заметок с классом note--basic */
     display: none;
 }
 
-.output__note.output__note--important { /* стиль отмеченных важным */
-    font-weight: 700;
+.output__note--important { /* стиль отмеченных важным */
+    font-weight: 700!important;
 }
 
 .output__note--important > .output__btn-area > .output__btn-basic { /* убираю кнопку сделать важным для для заметок с классом note--important */
     display: none;
 }
 
-.output__note.output__note--important>span:before {
-    content: "\2606  ";
+.output__note--important>span:before {
+    content: "\2606  "!important;
 }
 
-.output__note.output__note--done { /* делаю текс зачеркнутым для заметок с классом note--done */
-    text-decoration: line-through;
+.output__note--done { /* делаю текс зачеркнутым для заметок с классом note--done */
+    text-decoration: line-through!important;
 }
 
 .output__note--done > .output__btn-area { /* убираю блок с кнопками для заметок с классом note--done */
     display: none;
 }
-
-/*.output__note.output__note--basic:hover::after {
-    content: "MARK IMPORTANT";
-    float: right;
-    display: inline-block;
-    padding: 10px 16px;
-    border-radius: 20px;
-    background-color: rgb(56, 180, 108);
-    font-weight: normal;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.6);
-}*/
-
-/*.output__note.output__note--basic:hover::before {
-    content: url("img/del.svg");
-    float: right;
-    display: inline-block;
-    border-radius: 50%;
-    cursor: pointer;
-}*/
-
-/*.output__note--important:hover::after {
-    content: "NOT IMPORTANT";
-    float: right;
-    display: inline-block;
-    padding: 10px 16px;
-    border-radius: 20px;
-    background-color: rgb(194,194,194);
-    font-weight: normal;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.6);
-}*/
-
-/*.output__note--important:hover::before,
-.output__note.output__note--basic:hover::before{
-    content: url("img/del.svg");
-    float: right;
-    margin-left: 1rem;
-    display: inline-block;
-    border-radius: 50%;
-    cursor: pointer;
-}*/
 
 .output__btn-area { /* блок с кнопками */
     display: none;
@@ -302,5 +256,5 @@ textarea:focus {
     margin-left: 1rem;
     border: none;
     border-radius: 50%;
-    cursor: pointer;
+    cursor: not-allowed;
 }

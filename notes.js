@@ -1,61 +1,123 @@
-const allBtn = document.querySelector('#all'); // раздел all
-const activeBtn = document.querySelector('#active'); // раздел Active
-const doneBtn = document.querySelector('#done'); // раздел Done
-const progressBar = document.querySelector('.sort__progress-bar') // контейнер с кнопками для фильтра
-const allButtons = document.querySelectorAll('.sort__bar') // все кнопки для фильтра
-const doneNotes = document.querySelectorAll('.output__note--done') // выполненные заменки
-const activeNotes1 = document.querySelectorAll('.output__note--basic') // активные заметки
-const activeNotes2 = document.querySelectorAll('.output__note--important') // активные заметки
+const allSortButton = document.querySelector('#all'); // кнопка all в сортировщике
+const activeSortButton = document.querySelector('#active'); // кнопка Active в сортировщике
+const doneSortButton = document.querySelector('#done'); // кнопка Done в сортировщике
+const progressSortBar = document.querySelector('.sort__progress-bar'); // контейнер с кнопками для сортировки
+const outputWindow = document.querySelector('.output'); // вся секция с заметками
+const inputTextWindow = document.getElementById('input'); // окно ввода текста
+const addNewNoteButton = document.getElementById('add'); // кнопка ADD
 
-const outputWindows = document.querySelector('.output')
+function pushElementsToLocalStorage(parentName) { // данная функция обновляет localStorage удаляя/добавляя элементы внутри parentName
+    window.localStorage.setItem('notes', parentName.innerHTML)
+}
 
-outputWindows.addEventListener('click', (event) => {
-    console.log(event.target.classList[0]);
-    if (event.target.classList[0] === 'output__btn-basic') { /* если клик был по зеленой кнопке */
-        let x = event.target.closest('.output__note'); /* ближайший родитель с классом output__note */
-        x.className = 'output__note' /* оставляю только общий класс */
-        x.classList.add('output__note--important') /* добавляю класс отметить важным */
+function createElementsFromLocalStorage(parentName) { // данная функция создает элементы из localStorage внутри parentName
+    parentName.innerHTML = window.localStorage.getItem('notes')
+}
+
+function createElement(parentName, inputText) { // данная функция создает базовый элемент внутри parentName при наличии данных в inputText и добавляет этот текст внутрь
+    if (inputText.value !== '') {
+        let newElement = document.createElement('div'); // обертка *
+        newElement.classList.add('output__note--basic');
+        newElement.innerHTML = '<div class="output__btn-area">' +
+            '   <button class="output__btn-done">' +
+            '   <img src="img/del.svg" alt=""><' +
+            '/button> ' +
+            '<button class="output__btn-important">NOT IMPORTANT</button> ' +
+            '<button class="output__btn-basic">MARK IMPORTANT</button>' +
+            '</div>'
+        let span = document.createElement("span")
+        span.innerText = inputText.value
+        newElement.append(span)
+        parentName.append(newElement)
+        inputText.value = '';
     }
-    else if (event.target.classList[0] === 'output__btn-important') {
-        let x = event.target.closest('.output__note'); /* ближайший родитель с классом output__note */
-        x.className = 'output__note' /* оставляю только общий класс */
-        x.classList.add('output__note--basic') /* добавляю класс отметить важным */
+}
+
+function sortElements(allBtn, actBtn, doneBtn) { // данная функция в зависимости от положения переключателя сортировщика, отображает/убирает нужные элементы
+    if (allBtn.classList.contains('sort--selected-bar')) {
+        console.log('all is selected')
+        for (let x = 0; x <= outputWindow.children.length - 1; x++) {
+            outputWindow.children[x].style.display = 'block'
+        }
+    } else if (actBtn.classList.contains('sort--selected-bar')) {
+        console.log('active is selected')
+
+        for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл отображает всех детей outputWindow
+            outputWindow.children[y].style.display = 'block'
+        }
+        for (let x = 0; x <= outputWindow.children.length - 1; x++) {
+            if (outputWindow.children[x].classList.contains('output__note--done')) {
+                outputWindow.children[x].style.display = 'none'
+            }
+        }
+    } else if (doneBtn.classList.contains('sort--selected-bar')) {
+        console.log('done is selected')
+
+        for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл убирает класс hide у всех детей outputWindow
+            outputWindow.children[y].style.display = 'block'
+        }
+
+        for (let x = 0; x <= outputWindow.children.length - 1; x++) {
+            if (outputWindow.children[x].classList.contains('output__note--basic') || outputWindow.children[x].classList.contains('output__note--important')) {
+                outputWindow.children[x].style.display = 'none'
+            }
+        }
     }
-    else if (event.target.classList[0] === undefined) {
-        let x = event.target.closest('.output__note'); /* ближайший родитель с классом output__note */
-        x.className = 'output__note' /* оставляю только общий класс */
-        x.classList.add('output__note--done') /* добавляю класс отметить важным */
-    }
+}
 
-})
+function sortBarButtonToggle(parentName) {
+    parentName.addEventListener('click', (event) => {
+        let temp = parentName.children.length - 1
+        for (let x = 0; x <= temp; x++) {
+            parentName.children[x].classList.remove('sort--selected-bar')
+        }
+        event.target.classList.toggle('sort--selected-bar')
+        parentName.classList.remove('sort--selected-bar')
+        sortElements(allSortButton, activeSortButton, doneSortButton)
+    })
 
+}
 
-function start() { // дефолтная сортировка all при запуске
+function defaultFirstSortElements(allBtn) { // данная функция устанавливает переключатель фильтра в положение ALL и запускает фильтр
     allBtn.classList.toggle('sort--selected-bar')
+    sortElements(allSortButton, activeSortButton, doneSortButton)
+
+
 }
 
-start(); // дефолтная сортировка all
+function childrenClassListSwitcher(parentName) {
+    parentName.addEventListener('click', (event) => {
+        console.log(event.target.closest('.output__btn-done'))
 
-function sort(event) { // сортировщик
-    if (event.target === activeBtn) { // если активна вкладка active
-        doneNotes.forEach(DoneNotes => DoneNotes.style.display = 'none')
-        activeNotes1.forEach(ActiveNotes1 => ActiveNotes1.style.display = 'block')
-        activeNotes2.forEach(ActiveNotes2 => ActiveNotes2.style.display = 'block')
-    } else if (event.target === doneBtn) {
-        activeNotes1.forEach(ActiveNotes1 => ActiveNotes1.style.display = 'none')
-        activeNotes2.forEach(ActiveNotes2 => ActiveNotes2.style.display = 'none')
-        doneNotes.forEach(DoneNotes => DoneNotes.style.display = 'block')
-    } else if (event.target === allBtn) {
-        doneNotes.forEach(DoneNotes => DoneNotes.style.display = 'block')
-        activeNotes1.forEach(ActiveNotes1 => ActiveNotes1.style.display = 'block')
-        activeNotes2.forEach(ActiveNotes2 => ActiveNotes2.style.display = 'block')
+        // по клику на блок с заметкой придаю ему статус выполненного:
+        if (event.target.classList.contains('output__note--important') || event.target.classList.contains('output__note--basic')) {
+            event.target.classList = 'output__note--done';
+            pushElementsToLocalStorage(outputWindow)
+        }
 
-    }
+        // по клику на мусорку удалить этот элемент из dom
+        else if (event.target.closest('.output__btn-done')) {
+            if (event.target.closest('.output__note--important')) {
+                event.target.closest('.output__note--important').remove()
+                pushElementsToLocalStorage(outputWindow)
+            } else if (event.target.closest('.output__note--basic')) {
+                event.target.closest('.output__note--basic').remove()
+                pushElementsToLocalStorage(outputWindow)
+            }
+        }
+    })
 }
 
-progressBar.addEventListener('click', function (event) { // смена состояния кнопок фильтра
-    allButtons.forEach(n => n.classList.remove('sort--selected-bar')) // очищаю класс перед запуском
-    event.target.classList.toggle('sort--selected-bar')
-    sort(event)
+childrenClassListSwitcher(outputWindow)
+
+
+createElementsFromLocalStorage(outputWindow);
+
+sortBarButtonToggle(progressSortBar);
+
+defaultFirstSortElements(allSortButton)
+
+addNewNoteButton.addEventListener('click', () => {
+    createElement(outputWindow, inputTextWindow)
+    pushElementsToLocalStorage(outputWindow)
 })
-

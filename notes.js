@@ -5,6 +5,21 @@ const progressSortBar = document.querySelector('.sort__progress-bar'); // кон
 const outputWindow = document.querySelector('.output'); // вся секция с заметками
 const inputTextWindow = document.getElementById('input'); // окно ввода текста
 const addNewNoteButton = document.getElementById('add'); // кнопка ADD
+const removeAllNotes = document.getElementById('remove_all') // кнопка REMOVE ALL
+const yesBtn = document.getElementById('yes_button') // кнопка YES в мадальном окне
+const noBtn = document.getElementById('no_button') // кнопка NO в мадальном окне
+const modalWindow = document.querySelector('.modal') // модальное окно
+const bodyContent = document.querySelector('.wrapper') // модальное окно
+
+function modalWindowShow () { // данная функция прячет все содержимое body и показывает модальное окно
+    modalWindow.style.display = 'flex'
+    bodyContent.classList.add('hide')
+}
+
+function modalWindowHide () { // данная функция прячет модальное окно и показывает все содержимое body
+    modalWindow.style.display = 'none'
+    bodyContent.classList.remove('hide')
+}
 
 function pushElementsToLocalStorage(parentName) { // данная функция обновляет localStorage удаляя/добавляя элементы внутри parentName
     window.localStorage.setItem('notes', parentName.innerHTML)
@@ -87,7 +102,6 @@ function defaultFirstSortElements(allBtn) { // данная функция ус�
 
 function childrenClassListSwitcher(parentName) {
     parentName.addEventListener('click', (event) => {
-        console.log(event.target.closest('.output__btn-done'))
 
         // по клику на блок с заметкой придаю ему статус выполненного:
         if (event.target.classList.contains('output__note--important') || event.target.classList.contains('output__note--basic')) {
@@ -96,7 +110,7 @@ function childrenClassListSwitcher(parentName) {
         }
 
         // по клику на мусорку удалить этот элемент из dom
-        else if (event.target.closest('.output__btn-done')) {
+        else if (event.target.closest('.output__btn-done')) { // ослеживаю клик на мусорку
             if (event.target.closest('.output__note--important')) {
                 event.target.closest('.output__note--important').remove()
                 pushElementsToLocalStorage(outputWindow)
@@ -105,11 +119,24 @@ function childrenClassListSwitcher(parentName) {
                 pushElementsToLocalStorage(outputWindow)
             }
         }
+
+        // по клику на зеленую кнопку сменить класс
+        if (event.target.classList.contains('output__btn-basic')) {
+            event.target.closest('.output__note--basic').classList = 'output__note--important'
+            pushElementsToLocalStorage(outputWindow)
+        }
+
+        // по клику на серую кнопку сменить класс
+        if (event.target.classList.contains('output__btn-important')) {
+            event.target.closest('.output__note--important').classList = 'output__note--basic'
+            pushElementsToLocalStorage(outputWindow)
+        }
+
     })
+
 }
 
 childrenClassListSwitcher(outputWindow)
-
 
 createElementsFromLocalStorage(outputWindow);
 
@@ -120,4 +147,16 @@ defaultFirstSortElements(allSortButton)
 addNewNoteButton.addEventListener('click', () => {
     createElement(outputWindow, inputTextWindow)
     pushElementsToLocalStorage(outputWindow)
+})
+
+removeAllNotes.addEventListener('click', ()=> {
+    modalWindowShow();
+    noBtn.addEventListener('click', ()=> {
+        modalWindowHide()
+    })
+    yesBtn.addEventListener('click', ()=>{
+        outputWindow.innerHTML = '';
+        pushElementsToLocalStorage(outputWindow);
+        modalWindowHide()
+    })
 })

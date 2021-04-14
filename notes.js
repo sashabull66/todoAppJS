@@ -61,29 +61,29 @@ function createElement(parentName, inputText) { // данная функция �
 }
 
 function sortElements(allBtn, actBtn, doneBtn) { // данная функция в зависимости от положения переключателя сортировщика, отображает/убирает нужные элементы
-    if (allBtn.classList.contains('sort--selected-bar')) {
+    if (allBtn.classList.contains('sort--selected-bar')) { // если активна кнопка all в сортировщике
         for (let x = 0; x <= outputWindow.children.length - 1; x++) {
             inputGroup.style.display = 'flex' // показать блок ввода новых заметок
-            outputWindow.children[x].style.display = 'block'
+            outputWindow.children[x].style.display = 'block' // показать все заметки
         }
-    } else if (actBtn.classList.contains('sort--selected-bar')) {
+    } else if (actBtn.classList.contains('sort--selected-bar')) { // если активна кнопка active в сортировщике
         for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл отображает всех детей outputWindow
             outputWindow.children[y].style.display = 'block'
         }
+        inputGroup.style.display = 'flex' // показать блок ввода новых заметок
         for (let x = 0; x <= outputWindow.children.length - 1; x++) {
             inputGroup.style.display = 'flex' // показать блок ввода новых заметок
             if (outputWindow.children[x].classList.contains('output__note--done')) {
                 outputWindow.children[x].style.display = 'none'
             }
         }
-    } else if (doneBtn.classList.contains('sort--selected-bar')) {
+    } else if (doneBtn.classList.contains('sort--selected-bar')) { // если активна кнопка done в сортировщике
         inputGroup.style.display = 'none' // скрываю блок ввода новых заметок
-        for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл убирает класс hide у всех детей outputWindow
+        for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл отображает всех детей outputWindow
             outputWindow.children[y].style.display = 'block'
         }
-
         for (let x = 0; x <= outputWindow.children.length - 1; x++) {
-            if (outputWindow.children[x].classList.contains('output__note--basic') || outputWindow.children[x].classList.contains('output__note--important')) {
+            if (outputWindow.children[x].classList.contains('output__note--done') === false) { // если нету класса output__note--done
                 outputWindow.children[x].style.display = 'none'
             }
         }
@@ -107,9 +107,7 @@ function defaultFirstSortElements(allBtn, actBtn, doneBtn) { // данная ф�
     allBtn.classList.toggle('sort--selected-bar')
     actBtn.classList = 'sort__bar'
     doneBtn.classList = 'sort__bar'
-    setTimeout(() => {
-        sortElements(allSortButton, activeSortButton, doneSortButton)
-    }, 1000)
+    sortElements(allSortButton, activeSortButton, doneSortButton)
 }
 
 function childrenClassListSwitcher(parentName) {
@@ -118,6 +116,7 @@ function childrenClassListSwitcher(parentName) {
         // по клику на блок с заметкой придаю ему статус выполненного:
         if (event.target.classList.contains('output__note--important') || event.target.classList.contains('output__note--basic') || event.target.classList.contains('output__note--done')) {
             event.target.classList.toggle('output__note--done')
+            sortElements(allSortButton, activeSortButton, doneSortButton)
             pushElementsToLocalStorage(outputWindow)
 
         }
@@ -139,12 +138,14 @@ function childrenClassListSwitcher(parentName) {
         // по клику на зеленую кнопку сменить класс
         if (event.target.classList.contains('output__btn-basic')) {
             event.target.closest('.output__note--basic').classList = 'output__note--important'
+            sortElements(allSortButton, activeSortButton, doneSortButton)
             pushElementsToLocalStorage(outputWindow)
         }
 
         // по клику на серую кнопку сменить класс
         if (event.target.classList.contains('output__btn-important')) {
             event.target.closest('.output__note--important').classList = 'output__note--basic'
+            sortElements(allSortButton, activeSortButton, doneSortButton)
             pushElementsToLocalStorage(outputWindow)
         }
 

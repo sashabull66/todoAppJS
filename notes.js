@@ -10,25 +10,25 @@ const yesBtn = document.getElementById('yes_button') // кнопка YES в ма
 const noBtn = document.getElementById('no_button') // кнопка NO в мадальном окне
 const modalWindow = document.querySelector('.modal') // модальное окно
 const bodyContent = document.querySelector('.wrapper') // модальное окно
-const searchWindow = document.querySelector('#search')
+const searchWindow = document.querySelector('#search') // окно поиска
+const inputGroup = document.querySelector('.input') // блок с окном добавления новых заметок, кнопкой ADD&Remove ALL
 
-function searchElementsFromInput (searchWindow, parentName) { // данная функция ищет соответствие вводимого в input текста с содержимым parentName
-            for (let x = 0; x <= parentName.children.length - 1; x++) {
-                if (parentName.children[x].innerText.toLowerCase().includes(searchWindow.value.toLowerCase())) {
-                    parentName.children[x].style.display = 'block'
-                }
-                else {
-                    parentName.children[x].style.display = 'none'
-                }
-            }
+function searchElementsFromInput(searchWindow, parentName) { // данная функция ищет соответствие вводимого в input текста с содержимым parentName
+    for (let x = 0; x <= parentName.children.length - 1; x++) {
+        if (parentName.children[x].innerText.toLowerCase().includes(searchWindow.value.toLowerCase())) {
+            parentName.children[x].style.display = 'block'
+        } else {
+            parentName.children[x].style.display = 'none'
+        }
+    }
 }
 
-function modalWindowShow () { // данная функция прячет все содержимое body и показывает модальное окно
+function modalWindowShow() { // данная функция прячет все содержимое body и показывает модальное окно
     modalWindow.style.display = 'flex'
     bodyContent.classList.add('hide')
 }
 
-function modalWindowHide () { // данная функция прячет модальное окно и показывает все содержимое body
+function modalWindowHide() { // данная функция прячет модальное окно и показывает все содержимое body
     modalWindow.style.display = 'none'
     bodyContent.classList.remove('hide')
 }
@@ -63,22 +63,21 @@ function createElement(parentName, inputText) { // данная функция �
 function sortElements(allBtn, actBtn, doneBtn) { // данная функция в зависимости от положения переключателя сортировщика, отображает/убирает нужные элементы
     if (allBtn.classList.contains('sort--selected-bar')) {
         for (let x = 0; x <= outputWindow.children.length - 1; x++) {
+            inputGroup.style.display = 'flex' // показать блок ввода новых заметок
             outputWindow.children[x].style.display = 'block'
         }
     } else if (actBtn.classList.contains('sort--selected-bar')) {
-        console.log('active is selected')
-
         for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл отображает всех детей outputWindow
             outputWindow.children[y].style.display = 'block'
         }
         for (let x = 0; x <= outputWindow.children.length - 1; x++) {
+            inputGroup.style.display = 'flex' // показать блок ввода новых заметок
             if (outputWindow.children[x].classList.contains('output__note--done')) {
                 outputWindow.children[x].style.display = 'none'
             }
         }
     } else if (doneBtn.classList.contains('sort--selected-bar')) {
-        console.log('done is selected')
-
+        inputGroup.style.display = 'none' // скрываю блок ввода новых заметок
         for (let y = 0; y <= outputWindow.children.length - 1; y++) { // данный цикл убирает класс hide у всех детей outputWindow
             outputWindow.children[y].style.display = 'block'
         }
@@ -160,18 +159,18 @@ addNewNoteButton.addEventListener('click', () => {
     pushElementsToLocalStorage(outputWindow)
 })
 
-removeAllNotes.addEventListener('click', ()=> {
+removeAllNotes.addEventListener('click', () => {
     modalWindowShow();
-    noBtn.addEventListener('click', ()=> {
+    noBtn.addEventListener('click', () => {
         modalWindowHide()
     })
-    yesBtn.addEventListener('click', ()=>{
+    yesBtn.addEventListener('click', () => {
         outputWindow.innerHTML = '';
         pushElementsToLocalStorage(outputWindow);
         modalWindowHide()
     })
 })
 
-searchWindow.addEventListener('input', ()=>{
+searchWindow.addEventListener('input', () => {
     searchElementsFromInput(searchWindow, outputWindow)
 })

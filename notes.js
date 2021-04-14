@@ -10,6 +10,18 @@ const yesBtn = document.getElementById('yes_button') // кнопка YES в ма
 const noBtn = document.getElementById('no_button') // кнопка NO в мадальном окне
 const modalWindow = document.querySelector('.modal') // модальное окно
 const bodyContent = document.querySelector('.wrapper') // модальное окно
+const searchWindow = document.querySelector('#search')
+
+function searchElementsFromInput (searchWindow, parentName) { // данная функция ищет соответствие вводимого в input текста с содержимым parentName
+            for (let x = 0; x <= parentName.children.length - 1; x++) {
+                if (parentName.children[x].innerText.toLowerCase().includes(searchWindow.value.toLowerCase())) {
+                    parentName.children[x].style.display = 'block'
+                }
+                else {
+                    parentName.children[x].style.display = 'none'
+                }
+            }
+}
 
 function modalWindowShow () { // данная функция прячет все содержимое body и показывает модальное окно
     modalWindow.style.display = 'flex'
@@ -50,7 +62,6 @@ function createElement(parentName, inputText) { // данная функция �
 
 function sortElements(allBtn, actBtn, doneBtn) { // данная функция в зависимости от положения переключателя сортировщика, отображает/убирает нужные элементы
     if (allBtn.classList.contains('sort--selected-bar')) {
-        console.log('all is selected')
         for (let x = 0; x <= outputWindow.children.length - 1; x++) {
             outputWindow.children[x].style.display = 'block'
         }
@@ -159,4 +170,8 @@ removeAllNotes.addEventListener('click', ()=> {
         pushElementsToLocalStorage(outputWindow);
         modalWindowHide()
     })
+})
+
+searchWindow.addEventListener('input', ()=>{
+    searchElementsFromInput(searchWindow, outputWindow)
 })

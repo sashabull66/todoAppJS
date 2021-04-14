@@ -50,6 +50,10 @@ body {
     justify-content: space-around;
 }
 
+.hideText {
+    display: none;
+}
+
 .hide {
     position: absolute !important;
     top: -30000px !important;

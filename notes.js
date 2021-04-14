@@ -103,11 +103,13 @@ function sortBarButtonToggle(parentName) {
 
 }
 
-function defaultFirstSortElements(allBtn) { // данная функция устанавливает переключатель фильтра в положение ALL и запускает фильтр
+function defaultFirstSortElements(allBtn, actBtn, doneBtn) { // данная функция устанавливает переключатель фильтра в положение ALL и запускает фильтр
     allBtn.classList.toggle('sort--selected-bar')
-    sortElements(allSortButton, activeSortButton, doneSortButton)
-
-
+    actBtn.classList = 'sort__bar'
+    doneBtn.classList = 'sort__bar'
+    setTimeout(()=>{
+        sortElements(allSortButton, activeSortButton, doneSortButton)
+    }, 1000)
 }
 
 function childrenClassListSwitcher(parentName) {
@@ -152,7 +154,7 @@ createElementsFromLocalStorage(outputWindow);
 
 sortBarButtonToggle(progressSortBar);
 
-defaultFirstSortElements(allSortButton)
+defaultFirstSortElements(allSortButton, activeSortButton, doneSortButton);
 
 addNewNoteButton.addEventListener('click', () => {
     createElement(outputWindow, inputTextWindow)
@@ -171,6 +173,9 @@ removeAllNotes.addEventListener('click', () => {
     })
 })
 
-searchWindow.addEventListener('input', () => {
-    searchElementsFromInput(searchWindow, outputWindow)
+searchWindow.addEventListener('click', () => {
+    defaultFirstSortElements(allSortButton, activeSortButton, doneSortButton);
+    searchWindow.addEventListener('input', () => {
+        searchElementsFromInput(searchWindow, outputWindow)
+    })
 })

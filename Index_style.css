@@ -384,6 +384,10 @@ button:active {
         margin-bottom: 0.5rem;
         max-width: 20vw;
     }
+    .output__btn-area { /* блок с кнопками */
+        display: block;
+    }
+
 }
 
 

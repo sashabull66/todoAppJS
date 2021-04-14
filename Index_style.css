@@ -263,10 +263,12 @@ button:active {
     overflow: hidden;
 }
 
+.output > *:focus.output__note--done > .output__btn-area,
+.output > *:hover.output__note--done > .output__btn-area,
 .output > *:focus.output__note--basic > .output__btn-area,
 .output > *:hover.output__note--basic > .output__btn-area,
 .output > *:focus.output__note--important > .output__btn-area,
-.output > *:hover.output__note--important > .output__btn-area {
+.output > *:hover.output__note--important > .output__btn-area { /* отображаю кнопки при наведении на блок */
     display: block;
 }
 
@@ -293,7 +295,8 @@ button:active {
     text-decoration: line-through !important;
 }
 
-.output__note--done > .output__btn-area { /* убираю блок с кнопками для заметок с классом note--done */
+.output__note--done > .output__btn-area > .output__btn-basic,
+.output__note--done > .output__btn-area > .output__btn-important { /* убираю блок с кнопками для заметок с классом note--done */
     display: none;
 }
 

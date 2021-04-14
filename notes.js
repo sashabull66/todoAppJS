@@ -107,7 +107,7 @@ function defaultFirstSortElements(allBtn, actBtn, doneBtn) { // данная ф�
     allBtn.classList.toggle('sort--selected-bar')
     actBtn.classList = 'sort__bar'
     doneBtn.classList = 'sort__bar'
-    setTimeout(()=>{
+    setTimeout(() => {
         sortElements(allSortButton, activeSortButton, doneSortButton)
     }, 1000)
 }
@@ -116,9 +116,10 @@ function childrenClassListSwitcher(parentName) {
     parentName.addEventListener('click', (event) => {
 
         // по клику на блок с заметкой придаю ему статус выполненного:
-        if (event.target.classList.contains('output__note--important') || event.target.classList.contains('output__note--basic')) {
-            event.target.classList = 'output__note--done';
+        if (event.target.classList.contains('output__note--important') || event.target.classList.contains('output__note--basic') || event.target.classList.contains('output__note--done')) {
+            event.target.classList.toggle('output__note--done')
             pushElementsToLocalStorage(outputWindow)
+
         }
 
         // по клику на мусорку удалить этот элемент из dom
@@ -128,6 +129,9 @@ function childrenClassListSwitcher(parentName) {
                 pushElementsToLocalStorage(outputWindow)
             } else if (event.target.closest('.output__note--basic')) {
                 event.target.closest('.output__note--basic').remove()
+                pushElementsToLocalStorage(outputWindow)
+            } else if (event.target.closest('.output__note--done')) {
+                event.target.closest('.output__note--done').remove()
                 pushElementsToLocalStorage(outputWindow)
             }
         }

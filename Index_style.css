@@ -41,6 +41,7 @@ body {
     line-height: 19px;
     text-align: center;
     box-shadow: 1px 10px 30px 16px rgba(34, 60, 80, 0.37);
+    user-select: none;
 }
 
 .modal__buttons {
@@ -149,10 +150,22 @@ body {
     border-top: 4px solid rgba(255, 255, 255, 0.05);
     color: rgba(83, 86, 90, 1);
     cursor: pointer;
+    user-select: none;
+}
+
+.sort__bar:hover {
+    border-top: 4px solid rgb(47,192,200);
+    color: rgb(47,192,200);
 }
 
 .sort--selected-bar {
-    border-top: 4px solid #2F80ED;
+    border-top: 4px solid rgb(47,128,237);
+    color: black;
+    cursor: default;
+}
+
+.sort--selected-bar:hover {
+    border-top: 4px solid rgb(47,128,237);
     color: black;
 }
 
@@ -167,6 +180,7 @@ body {
     font-size: 12px;
     line-height: 15px;
     color: #706E6B;
+    user-select: none;
 }
 
 .input__window {
@@ -221,13 +235,16 @@ textarea:hover {
     box-shadow: 0 0 4px 4px rgba(47, 128, 237, 0.33);
 }
 
-
 input:active,
 input:focus,
 textarea:active,
 textarea:focus {
     box-shadow: 0 0 2px 3px rgba(47, 128, 237, 0.45);
     outline: none;
+}
+
+button {
+    user-select: none;
 }
 
 button:hover,
@@ -263,6 +280,13 @@ button:active {
     overflow: hidden;
 }
 
+.output > * > span {
+    position: relative;
+    pointer-events:none; /* разрешить тексту учавствовать в событиях */
+    user-select: none; /* запретить выделение */
+    display: block;
+}
+
 .output > *:focus.output__note--done > .output__btn-area,
 .output > *:hover.output__note--done > .output__btn-area,
 .output > *:focus.output__note--basic > .output__btn-area,
@@ -291,8 +315,9 @@ button:active {
     content: "\2606  " !important;
 }
 
-.output__note--done { /* делаю текс зачеркнутым для заметок с классом note--done */
-    text-decoration: line-through !important;
+.output__note--done > .readMoreDemoText,
+.output__note--done > .tooLongText { /* делаю текс зачеркнутым для заметок с классом note--done */
+    text-decoration: line-through;
 }
 
 .output__note--done > .output__btn-area > .output__btn-basic,
@@ -301,6 +326,7 @@ button:active {
 }
 
 .output__btn-area { /* блок с кнопками */
+    position: relative;
     display: none;
     float: right;
 }
@@ -339,6 +365,20 @@ button:active {
     background-color: inherit;
     cursor: not-allowed;
     box-shadow: none!important;
+}
+
+.output__note--basic:hover,
+.output__note--basic:focus,
+.output__note--important:hover,
+.output__note--important:focus,
+.output__note--done:focus,
+.output__note--done:hover {
+    box-shadow: 0 0 2px 3px rgba(47, 128, 237, 0.45);
+}
+
+.read-more {
+    color: #2F80ED;
+    text-decoration: none!important;
 }
 
 

@@ -13,6 +13,20 @@ const bodyContent = document.querySelector('.wrapper') // модальное о�
 const searchWindow = document.querySelector('#search') // окно поиска
 const inputGroup = document.querySelector('.input') // блок с окном добавления новых заметок, кнопкой ADD&Remove ALL
 
+function readMore (parentWithTextElement, textElement) {
+    let newTextElement = document.createElement('span')
+    let content = textElement.textContent.slice(0,225)
+    newTextElement.textContent = content + '...'
+    newTextElement.classList.add('readMoreDemoText')
+    textElement.classList.add('hide')
+    let readMoreBtn = document.createElement('div')
+    readMoreBtn.textContent = 'Read more/hide'
+    readMoreBtn.classList.add('read-more')
+    parentWithTextElement.append(readMoreBtn)
+    parentWithTextElement.insertBefore(newTextElement, readMoreBtn)
+
+}
+
 function searchElementsFromInput(searchWindow, parentName) { // данная функция ищет соответствие вводимого в input текста с содержимым parentName
     for (let x = 0; x <= parentName.children.length - 1; x++) {
         if (parentName.children[x].innerText.toLowerCase().includes(searchWindow.value.toLowerCase())) {
@@ -53,11 +67,19 @@ function createElement(parentName, inputText) { // данная функция �
             '<button class="output__btn-basic">MARK IMPORTANT</button>' +
             '</div>'
         let span = document.createElement("span")
-        span.innerText = inputText.value
+        span.textContent = inputText.value
+        if (inputText.value.length > 225) { // проверка для readMore
+            span.classList.add('tooLongText')
+        }
         newElement.append(span)
+        if (inputText.value.length > 225) { // проверка для readMore
+            readMore(newElement, span)
+        }
         parentName.append(newElement)
         inputText.value = '';
+
     }
+
 }
 
 function sortElements(allBtn, actBtn, doneBtn) { // данная функция в зависимости от положения переключателя сортировщика, отображает/убирает нужные элементы
@@ -112,15 +134,12 @@ function defaultFirstSortElements(allBtn, actBtn, doneBtn) { // данная ф�
 
 function childrenClassListSwitcher(parentName) {
     parentName.addEventListener('click', (event) => {
-
         // по клику на блок с заметкой придаю ему статус выполненного:
         if (event.target.classList.contains('output__note--important') || event.target.classList.contains('output__note--basic') || event.target.classList.contains('output__note--done')) {
             event.target.classList.toggle('output__note--done')
             sortElements(allSortButton, activeSortButton, doneSortButton)
             pushElementsToLocalStorage(outputWindow)
-
         }
-
         // по клику на мусорку удалить этот элемент из dom
         else if (event.target.closest('.output__btn-done')) { // ослеживаю клик на мусорку
             if (event.target.closest('.output__note--important')) {
@@ -134,23 +153,30 @@ function childrenClassListSwitcher(parentName) {
                 pushElementsToLocalStorage(outputWindow)
             }
         }
-
         // по клику на зеленую кнопку сменить класс
         if (event.target.classList.contains('output__btn-basic')) {
             event.target.closest('.output__note--basic').classList = 'output__note--important'
             sortElements(allSortButton, activeSortButton, doneSortButton)
             pushElementsToLocalStorage(outputWindow)
         }
-
         // по клику на серую кнопку сменить класс
         if (event.target.classList.contains('output__btn-important')) {
             event.target.closest('.output__note--important').classList = 'output__note--basic'
             sortElements(allSortButton, activeSortButton, doneSortButton)
             pushElementsToLocalStorage(outputWindow)
         }
+        // по клику на текст Read more раскрыть вест текст
+        if (event.target.classList.contains('read-more')) {
+            event.target.previousSibling.previousSibling
+            let note = event.target.closest('.output__note--basic') || event.target.closest('.output__note--important')
+            let demoText = event.target.previousSibling
+            let originText = event.target.previousSibling.previousSibling
+            demoText.classList.toggle('hide')
+            originText.classList.toggle('hide')
+            note.style.height = 'auto';
 
+        }
     })
-
 }
 
 childrenClassListSwitcher(outputWindow)

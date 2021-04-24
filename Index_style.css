@@ -315,9 +315,8 @@ button:active {
     content: "\2606  " !important;
 }
 
-.output__note--done > .readMoreDemoText,
-.output__note--done > .tooLongText { /* делаю текс зачеркнутым для заметок с классом note--done */
-    text-decoration: line-through;
+.output__note--done span { /* делаю текс зачеркнутым для заметок с классом note--done */
+    text-decoration: line-through !important;
 }
 
 .output__note--done > .output__btn-area > .output__btn-basic,
